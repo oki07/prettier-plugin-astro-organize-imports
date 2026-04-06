@@ -1,5 +1,11 @@
 # prettier-plugin-astro-organize-imports
 
+## 0.4.12
+
+### Patch Changes
+
+- [`1fc0b1e`](https://github.com/oki07/prettier-plugin-astro-organize-imports/commit/1fc0b1eb94f1b5c150e86fcb964d5ffb259e0e55) Thanks [@oki07](https://github.com/oki07)! - Fix support for TypeScript 6 `organizeImports` API behavior change where semicolons are added to import statements
+
 ## 0.4.11
 
 ### Patch Changes
