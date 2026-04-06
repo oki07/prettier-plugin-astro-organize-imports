@@ -40,7 +40,7 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url))
 let context = await esbuild.context({
   bundle: true,
   platform: 'node',
-  target: 'node14.21.3',
+  target: 'node18',
   external: ['prettier', '@astrojs/compiler/sync'],
   minify: true,
   entryPoints: [path.resolve(__dirname, '../src/index.js')],

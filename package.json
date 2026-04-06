@@ -35,7 +35,7 @@
     "prepare": "lefthook install",
     "release": "npm run clean && npm run build && changeset publish",
     "test": "npm run build && vitest --run",
-    "type-check": "tsc --noEmit"
+    "typecheck": "tsc --noEmit"
   },
   "dependencies": {
     "@astrojs/compiler": "^3.0.1",
