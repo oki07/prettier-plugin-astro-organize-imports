@@ -85,7 +85,12 @@ export async function loadPlugin() {
 
       // basically options.plugins.* == mod
       // But that can't work because prettier normalizes plugins which destroys top-level object identity
-      if (plugin.parsers && mod.parsers && plugin.parsers === mod.parsers) {
+      if (
+        !(plugin instanceof URL) &&
+        plugin.parsers &&
+        mod.parsers &&
+        plugin.parsers === mod.parsers
+      ) {
         return mod
       }
     }

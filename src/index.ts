@@ -37,22 +37,18 @@ export const parsers: Record<string, Parser> = {
 
     ...plugin.parser,
 
-    preprocess(code, options) {
+    async preprocess(code, options) {
       const originalParser = plugin.originalParser(options)
 
-      const pipeline = [
-        wrapExpressionWithComponent,
-        (code: string) =>
-          options.astroOrganizeImportsInScriptTags
-            ? organizeImportsInScriptTags(code, options)
-            : code,
-        (code: string) => originalParser.preprocess?.(code, options) ?? code,
-        (code: string) =>
-          organizeImports(code, options.astroOrganizeImportsMode),
-        unwrapExpressionWithComponent,
-      ]
-
-      return pipeline.reduce((code, fn) => fn(code), code)
+      let result = code
+      result = wrapExpressionWithComponent(result)
+      result = options.astroOrganizeImportsInScriptTags
+        ? organizeImportsInScriptTags(result, options)
+        : result
+      result = (await originalParser.preprocess?.(result, options)) ?? result
+      result = organizeImports(result, options.astroOrganizeImportsMode)
+      result = unwrapExpressionWithComponent(result)
+      return result
     },
 
     parse(text, options) {
