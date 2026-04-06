@@ -15,7 +15,8 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: 22
-      - run: npm install --legacy-peer-deps --ignore-scripts
+          cache: 'npm'
+      - run: npm install --ignore-scripts
       - id: changesets
         uses: changesets/action@v1
         with:
