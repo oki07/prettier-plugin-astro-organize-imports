@@ -2,7 +2,7 @@
   "$schema": "https://unpkg.com/@changesets/config@3.0.0/schema.json",
   "changelog": [
     "@changesets/changelog-github",
-    { "repo": "neoki07/prettier-plugin-astro-organize-imports" }
+    { "repo": "oki07/prettier-plugin-astro-organize-imports" }
   ],
   "commit": false,
   "fixed": [],
