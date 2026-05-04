@@ -42,6 +42,18 @@ const tests = [
     fixtureDir: 'script-tags',
   },
   {
+    name: 'style tag in template',
+    fixtureDir: 'style-tag',
+  },
+  {
+    name: 'style tag with attributes (is:global, lang)',
+    fixtureDir: 'style-tag-with-attributes',
+  },
+  {
+    name: 'style and script tags in template',
+    fixtureDir: 'style-and-script-tags',
+  },
+  {
     name: 'ignore organize imports inside script tags',
     fixtureDir: 'ignore-organize-imports-in-script-tags',
     options: {
