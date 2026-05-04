@@ -1,0 +1,22 @@
+---
+import Bar from './Bar.astro'
+import Foo from './Foo.astro'
+---
+
+<Foo>
+  <Bar />
+</Foo>
+
+<style is:global>
+  body {
+    margin: 0;
+  }
+</style>
+
+<style lang="scss">
+  .nested {
+    & .child {
+      color: blue;
+    }
+  }
+</style>

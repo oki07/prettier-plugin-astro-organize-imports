@@ -5,6 +5,7 @@ import {
   TSLINT_DISABLE_ORDERED_IMPORTS_COMMENT,
 } from './constants'
 import { getLanguageService } from './get-language-service'
+import { stripStyleAndScriptElements } from './strip-style-and-script'
 
 const FILE_PATH = 'file.tsx'
 
@@ -59,8 +60,16 @@ function organize(code: string, mode: OrganizeImportsMode) {
   const frontmatter = match[2]
   const template = code.slice(match[0].length)
 
+  const sanitizedTemplate = stripStyleAndScriptElements(code).slice(
+    match[0].length,
+  )
+
   const tsCode =
-    frontmatter + TEMPLATE_BOUNDARY + newline + template + TEMPLATE_WRAPPER_END
+    frontmatter +
+    TEMPLATE_BOUNDARY +
+    newline +
+    sanitizedTemplate +
+    TEMPLATE_WRAPPER_END
   const organized = organizeCode(tsCode, mode)
   const boundaryIdx = organized.indexOf(TEMPLATE_BOUNDARY_MARKER)
   const organizedFrontmatter = preserveSemicolonStyle(

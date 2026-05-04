@@ -1,0 +1,20 @@
+---
+import Bar from './Bar.astro'
+import Foo from './Foo.astro'
+---
+
+<Foo>
+  <Bar />
+</Foo>
+
+<script>
+  import { bar } from 'bar'
+import { foo } from 'foo'
+  console.log(foo, bar)
+</script>
+
+<style>
+  div {
+    color: red;
+  }
+</style>
