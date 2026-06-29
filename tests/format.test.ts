@@ -1,5 +1,6 @@
 import { OrganizeImportsMode } from 'typescript'
 import { describe, expect, test } from 'vitest'
+import { parsers } from '../src'
 import { format, readFixture } from './utils'
 
 const tests = [
@@ -57,6 +58,10 @@ const tests = [
     fixtureDir: 'multiple-top-level-expressions',
   },
   {
+    name: 'root expressions',
+    fixtureDir: 'root-expressions',
+  },
+  {
     name: 'organize-imports-ignore',
     fixtureDir: 'organize-imports-ignore',
   },
@@ -67,6 +72,11 @@ const tests = [
   {
     name: 'with prettier-plugin-astro',
     fixtureDir: 'with-astro-plugin',
+    plugins: ['prettier-plugin-astro'],
+  },
+  {
+    name: 'with prettier-plugin-astro and no imports',
+    fixtureDir: 'with-astro-plugin-no-imports',
     plugins: ['prettier-plugin-astro'],
   },
   {
@@ -84,4 +94,15 @@ describe('format', () => {
       expect(actual).toEqual(expected)
     })
   }
+
+  test('preprocess returns a string synchronously', () => {
+    const { input } = readFixture('with-astro-plugin-no-imports')
+    const actual = parsers.astro.preprocess?.(input, {
+      astroOrganizeImportsInScriptTags: true,
+      astroOrganizeImportsMode: OrganizeImportsMode.All,
+    } as never)
+
+    expect(actual).not.toBeInstanceOf(Promise)
+    expect(typeof actual).toBe('string')
+  })
 })

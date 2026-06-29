@@ -1,21 +1,9 @@
-import type {
-  AstPath,
-  Doc,
-  Options,
-  Parser,
-  ParserOptions,
-  Printer,
-  SupportOption,
-} from 'prettier'
+import type { Parser, Printer, SupportOption } from 'prettier'
 import { OrganizeImportsMode } from 'typescript'
 import {
   organizeImports,
   organizeImportsInScriptTags,
 } from './organize-imports'
-import {
-  unwrapExpressionWithComponent,
-  wrapExpressionWithComponent,
-} from './organize-imports/expression'
 import { loadPlugin } from './plugins'
 
 export interface PluginOptions {
@@ -37,17 +25,16 @@ export const parsers: Record<string, Parser> = {
 
     ...plugin.parser,
 
-    async preprocess(code, options) {
+    preprocess(code, options) {
       const originalParser = plugin.originalParser(options)
 
       let result = code
-      result = wrapExpressionWithComponent(result)
       result = options.astroOrganizeImportsInScriptTags
         ? organizeImportsInScriptTags(result, options)
         : result
-      result = (await originalParser.preprocess?.(result, options)) ?? result
+      const preprocessed = originalParser.preprocess?.(result, options)
+      result = typeof preprocessed === 'string' ? preprocessed : result
       result = organizeImports(result, options.astroOrganizeImportsMode)
-      result = unwrapExpressionWithComponent(result)
       return result
     },
 
@@ -59,33 +46,7 @@ export const parsers: Record<string, Parser> = {
 }
 
 export const printers: Record<string, Printer> = {
-  astro: {
-    print(path: AstPath, opts: ParserOptions, print: (path: AstPath) => Doc) {
-      const original = plugin.originalPrinter(opts)
-
-      if (original.print) {
-        return original.print(path, opts, print)
-      }
-
-      const { node } = path
-
-      if (typeof node === 'string') {
-        return node
-      }
-
-      return node.value
-    },
-
-    embed(path: AstPath, options: Options) {
-      const original = plugin.originalPrinter(options)
-
-      if (original.embed) {
-        return original.embed(path, options)
-      }
-
-      return null
-    },
-  },
+  astro: plugin.printer as Printer,
 }
 
 export const options: Record<keyof PluginOptions, SupportOption> = {

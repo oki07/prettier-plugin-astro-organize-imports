@@ -1,0 +1,17 @@
+---
+import Alpha from './Alpha.astro'
+import Zed from './Zed.astro'
+
+const showAlpha = true
+const showZed = false
+---
+
+{
+  showAlpha && <Alpha />
+}
+
+{/* root comment */}
+
+{
+  showZed && <Zed />
+}
