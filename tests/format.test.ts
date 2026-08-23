@@ -55,6 +55,18 @@ const tests = [
     fixtureDir: 'style-and-script-tags',
   },
   {
+    name: 'keeps imports used only by define:vars',
+    fixtureDir: 'style-define-vars',
+  },
+  {
+    name: 'keeps imports used only by define:vars in a script tag',
+    fixtureDir: 'script-define-vars',
+  },
+  {
+    name: 'keeps define:vars imports when the tag carries other attributes',
+    fixtureDir: 'style-define-vars-with-attributes',
+  },
+  {
     name: 'ignore organize imports inside script tags',
     fixtureDir: 'ignore-organize-imports-in-script-tags',
     options: {

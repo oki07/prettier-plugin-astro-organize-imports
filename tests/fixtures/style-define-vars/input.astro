@@ -1,0 +1,12 @@
+---
+import { textColor } from './theme'
+import { greeting } from './strings'
+---
+
+<h1>{greeting}</h1>
+
+<style define:vars={{ textColor }}>
+  h1 {
+    color: var(--textColor);
+  }
+</style>

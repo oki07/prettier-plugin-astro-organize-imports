@@ -1,0 +1,10 @@
+---
+import { other } from './other'
+import { message } from './strings'
+---
+
+<p>{other}</p>
+
+<script define:vars={{ message }}>
+  console.log(message)
+</script>
