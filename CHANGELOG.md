@@ -1,5 +1,15 @@
 # prettier-plugin-astro-organize-imports
 
+## 0.4.13
+
+### Patch Changes
+
+- [#224](https://github.com/oki07/prettier-plugin-astro-organize-imports/pull/224) [`f68b4fc`](https://github.com/oki07/prettier-plugin-astro-organize-imports/commit/f68b4fc305e7e91729ad9bd1157d93efc716c9f1) Thanks [@itosa-kazu](https://github.com/itosa-kazu)! - Emit `dist/index.d.ts` during build so the published package ships the type declarations it already advertises via the `types` field (previously consumers got `TS7016`)
+
+- [#225](https://github.com/oki07/prettier-plugin-astro-organize-imports/pull/225) [`0de5884`](https://github.com/oki07/prettier-plugin-astro-organize-imports/commit/0de58845122490cf0ccd19c76a9f07abcb146d86) Thanks [@adamchal](https://github.com/adamchal)! - Fix two bugs with `prettier-plugin-astro`: `.astro` files being silently overwritten with `<object></object>` on Prettier 3.6, and imports not being organized in files containing root-level `{expr}` blocks ([#223](https://github.com/oki07/prettier-plugin-astro-organize-imports/issues/223)).
+
+- [#222](https://github.com/oki07/prettier-plugin-astro-organize-imports/pull/222) [`21bf86c`](https://github.com/oki07/prettier-plugin-astro-organize-imports/commit/21bf86c3bd28c497ab42949d252ea34613819aa5) Thanks [@adamchal](https://github.com/adamchal)! - Fix imports silently not being organized when the template contains a `<style>` tag (or a `<script>` tag whose body isn't valid TSX). `<style>`/`<script>` elements are now stripped from the synthetic TSX passed to TypeScript's language service, so frontmatter imports are organized regardless of template contents ([#221](https://github.com/oki07/prettier-plugin-astro-organize-imports/issues/221)).
+
 ## 0.4.12
 
 ### Patch Changes
