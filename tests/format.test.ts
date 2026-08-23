@@ -107,7 +107,8 @@ describe('format', () => {
     })
   }
 
-  test('preprocess returns a string synchronously', () => {
+  // Prettier 3.6.x does not await this hook (#223).
+  test('preprocess stays synchronous, so no Promise reaches the parser', () => {
     const { input } = readFixture('with-astro-plugin-no-imports')
     const actual = parsers.astro.preprocess?.(input, {
       astroOrganizeImportsInScriptTags: true,
