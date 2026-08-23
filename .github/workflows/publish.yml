@@ -7,21 +7,27 @@ on:
 
 concurrency: ${{ github.workflow }}-${{ github.ref }}
 
+permissions:
+  contents: write
+  pull-requests: write
+  # Lets npm exchange a short-lived OIDC token instead of a stored NPM_TOKEN.
+  id-token: write
+
 jobs:
   publish:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - uses: actions/checkout@v7
+      # Node 24 ships npm 11, the floor for trusted publishing. No cache here:
+      # this is the job that publishes.
+      - uses: actions/setup-node@v6
         with:
-          node-version: 22
-          cache: 'npm'
+          node-version: 24
+          registry-url: 'https://registry.npmjs.org'
       - run: npm install --ignore-scripts
-      - id: changesets
-        uses: changesets/action@v1
+      - uses: changesets/action@v1
         with:
           publish: npm run release
           commit: 'chore: version packages'
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}

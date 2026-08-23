@@ -7,19 +7,26 @@ on:
   pull_request:
   workflow_dispatch:
 
+permissions:
+  contents: read
+
 jobs:
   quality:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v6
         with:
-          node-version: 22
+          node-version: 24
           cache: 'npm'
       - run: npm install --ignore-scripts
       - run: npm run format:check
       - run: npm run lint
       - run: npm run typecheck
+      - name: Lint workflows
+        uses: docker://rhysd/actionlint:1.7.12
+        with:
+          args: -color
 
   test:
     runs-on: ubuntu-latest
@@ -31,10 +38,10 @@ jobs:
         prettier: ['3.0', '3.6', '3.7', '3.8']
     name: test (prettier ${{ matrix.prettier }})
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v6
         with:
-          node-version: 22
+          node-version: 24
           cache: 'npm'
       - run: npm install --ignore-scripts
       - run: npm install --no-save --ignore-scripts prettier@${{ matrix.prettier }}
