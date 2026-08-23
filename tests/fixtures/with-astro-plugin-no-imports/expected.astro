@@ -1,0 +1,9 @@
+---
+type Props = {
+  class?: string
+}
+
+const classNames = Astro.props.class
+---
+
+<div class:list={classNames}>Hello</div>
