@@ -13,5 +13,15 @@ export default [
         '@typescript-eslint/no-empty-object-type': 'off',
       },
     },
+    {
+      // Build and test scripts run in Node, outside the typed `src` config.
+      files: ['scripts/**/*.mjs'],
+      languageOptions: {
+        globals: {
+          console: 'readonly',
+          process: 'readonly',
+        },
+      },
+    },
   ),
 ]

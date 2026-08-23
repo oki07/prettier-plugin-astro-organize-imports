@@ -35,6 +35,7 @@
     "prepare": "lefthook install",
     "release": "npm run clean && npm run build && changeset publish",
     "test": "npm run build && vitest --run",
+    "test:standalone": "npm run build && node scripts/smoke-standalone.mjs",
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
