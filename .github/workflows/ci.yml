@@ -20,4 +20,23 @@ jobs:
       - run: npm run format:check
       - run: npm run lint
       - run: npm run typecheck
+
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        # 3.0 is the peerDependency floor. 3.6 does not await the parser's
+        # `preprocess` hook and 3.7 does, so both sides of that line (#223).
+        prettier: ['3.0', '3.6', '3.7', '3.8']
+    name: test (prettier ${{ matrix.prettier }})
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: 'npm'
+      - run: npm install --ignore-scripts
+      - run: npm install --no-save --ignore-scripts prettier@${{ matrix.prettier }}
       - run: npm test
+      - run: npm run test:standalone
