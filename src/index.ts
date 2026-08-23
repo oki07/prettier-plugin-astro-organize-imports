@@ -1,4 +1,12 @@
-import type { Parser, Printer, SupportOption } from 'prettier'
+import type {
+  AstPath,
+  Doc,
+  Options,
+  Parser,
+  ParserOptions,
+  Printer,
+  SupportOption,
+} from 'prettier'
 import { OrganizeImportsMode } from 'typescript'
 import {
   organizeImports,
@@ -32,8 +40,17 @@ export const parsers: Record<string, Parser> = {
       result = options.astroOrganizeImportsInScriptTags
         ? organizeImportsInScriptTags(result, options)
         : result
-      const preprocessed = originalParser.preprocess?.(result, options)
-      result = typeof preprocessed === 'string' ? preprocessed : result
+      // `unknown` because Prettier's own type for this differs across 3.x.
+      const preprocessed: unknown = originalParser.preprocess?.(result, options)
+      if (preprocessed instanceof Promise) {
+        throw new Error(
+          'A compatible plugin returned an async `preprocess`, which cannot be ' +
+            'awaited here without breaking Prettier 3.6 (#223).',
+        )
+      }
+      if (typeof preprocessed === 'string') {
+        result = preprocessed
+      }
       result = organizeImports(result, options.astroOrganizeImportsMode)
       return result
     },
@@ -46,7 +63,33 @@ export const parsers: Record<string, Parser> = {
 }
 
 export const printers: Record<string, Printer> = {
-  astro: plugin.printer as Printer,
+  astro: {
+    print(path: AstPath, opts: ParserOptions, print: (path: AstPath) => Doc) {
+      const original = plugin.originalPrinter(opts)
+
+      if (original.print) {
+        return original.print(path, opts, print)
+      }
+
+      const { node } = path
+
+      if (typeof node === 'string') {
+        return node
+      }
+
+      return node.value
+    },
+
+    embed(path: AstPath, options: Options) {
+      const original = plugin.originalPrinter(options)
+
+      if (original.embed) {
+        return original.embed(path, options)
+      }
+
+      return null
+    },
+  },
 }
 
 export const options: Record<keyof PluginOptions, SupportOption> = {
