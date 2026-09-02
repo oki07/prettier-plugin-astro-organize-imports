@@ -39,25 +39,25 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
-    "@astrojs/compiler": "^3.0.1",
-    "typescript": "^6.0.2"
+    "@astrojs/compiler": "^4.0.0",
+    "typescript": "^6.0.3"
   },
   "devDependencies": {
-    "@changesets/changelog-github": "^0.6.0",
-    "@changesets/cli": "^2.30.0",
-    "@eslint/js": "^9.39.4",
-    "@types/node": "^25.5.2",
-    "esbuild": "^0.28.0",
-    "eslint": "^9.39.4",
+    "@changesets/changelog-github": "^1.0.0",
+    "@changesets/cli": "^3.0.1",
+    "@eslint/js": "^10.0.1",
+    "@types/node": "^26.4.1",
+    "esbuild": "^0.28.2",
+    "eslint": "^10.9.1",
     "eslint-config-prettier": "^10.1.8",
-    "lefthook": "^2.1.5",
-    "prettier": "^3.8.1",
+    "lefthook": "^2.1.12",
+    "prettier": "^3.9.6",
     "prettier-plugin-astro": "^0.14.1",
     "prettier-plugin-organize-imports": "^4.3.0",
-    "prettier-plugin-tailwindcss": "^0.7.2",
+    "prettier-plugin-tailwindcss": "^0.8.1",
     "rimraf": "^6.1.3",
-    "typescript-eslint": "^8.58.0",
-    "vitest": "^4.1.2"
+    "typescript-eslint": "^8.69.0",
+    "vitest": "^4.1.11"
   },
   "peerDependencies": {
     "prettier": "^3.0",

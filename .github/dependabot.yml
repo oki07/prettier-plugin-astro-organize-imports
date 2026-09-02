@@ -8,3 +8,9 @@ updates:
       dependencies:
         patterns:
           - '*'
+    ignore:
+      # TypeScript 7 is the native port. Its entry point exports only version
+      # information, the real API moved to `typescript/unstable/*`, and
+      # `organizeImports` -- the whole point of this plugin -- is not in it.
+      - dependency-name: 'typescript'
+        update-types: ['version-update:semver-major']

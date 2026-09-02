@@ -35,7 +35,7 @@ jobs:
       matrix:
         # 3.0 is the peerDependency floor. 3.6 does not await the parser's
         # `preprocess` hook and 3.7 does, so both sides of that line (#223).
-        prettier: ['3.0', '3.6', '3.7', '3.8']
+        prettier: ['3.0', '3.6', '3.7', '3.8', '3.9']
     name: test (prettier ${{ matrix.prettier }})
     steps:
       - uses: actions/checkout@v7
