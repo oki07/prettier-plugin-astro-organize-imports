@@ -71,6 +71,9 @@ This plugin uses Prettier APIs that can only be used by one plugin at a time, ma
 - `prettier-plugin-astro`
 - `prettier-plugin-tailwindcss`
 
+`prettier-plugin-tailwindcss` 0.8 needs Prettier 3.7 or later. On older Prettier
+versions it formats `.astro` files as HTML, with or without this plugin.
+
 One limitation with this approach is that `prettier-plugin-astro-organize-imports` must be loaded last. You can do this by listing each of your Prettier plugins in the `plugins` array:
 
 <!-- prettier-ignore -->

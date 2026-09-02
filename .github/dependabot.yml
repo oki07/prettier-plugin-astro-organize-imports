@@ -8,3 +8,7 @@ updates:
       dependencies:
         patterns:
           - '*'
+    ignore:
+      # TypeScript 7 does not ship `organizeImports`.
+      - dependency-name: 'typescript'
+        update-types: ['version-update:semver-major']

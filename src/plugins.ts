@@ -24,6 +24,31 @@ async function loadBasePlugins() {
   return mod
 }
 
+async function resolveEntry<T extends object>(
+  entry: unknown,
+): Promise<Partial<T>> {
+  if (typeof entry === 'function') {
+    try {
+      return ((await (entry as () => unknown)()) ?? {}) as Partial<T>
+    } catch {
+      return {}
+    }
+  }
+
+  return (entry ?? {}) as Partial<T>
+}
+
+// `preprocess` has to stay synchronous (#223).
+function dropAsyncPreprocess(parser: Partial<Parser>): Partial<Parser> {
+  if (parser.preprocess?.constructor.name !== 'AsyncFunction') {
+    return parser
+  }
+
+  const rest = { ...parser }
+  delete rest.preprocess
+  return rest
+}
+
 async function loadCompatiblePlugins() {
   const plugins = [basePlugin, 'prettier-plugin-tailwindcss']
 
@@ -34,6 +59,10 @@ async function loadCompatiblePlugins() {
       return {
         name,
         mod,
+        parser: dropAsyncPreprocess(
+          await resolveEntry<Parser>(mod.parsers?.astro),
+        ),
+        printer: await resolveEntry<Printer>(mod.printers?.astro),
       }
     }),
   )
@@ -45,7 +74,7 @@ export async function loadPlugin() {
   const base = await loadBasePlugins()
   const compatible = await loadCompatiblePlugins()
 
-  const baseParser = base.parsers?.astro ? { ...base.parsers.astro } : {}
+  const baseParser = { ...(await resolveEntry<Parser>(base.parsers?.astro)) }
 
   function maybeResolve(name: string) {
     try {
@@ -106,13 +135,12 @@ export async function loadPlugin() {
         return {}
       }
 
-      const parser = {}
+      const parser: Partial<Parser> = {}
 
       // Now load parsers from "compatible" plugins if any
-      for (const { name, mod } of compatible) {
-        const plugin = findEnabledPlugin(options, name, mod)
-        if (plugin) {
-          Object.assign(parser, plugin.parsers?.astro)
+      for (const { name, mod, parser: astro } of compatible) {
+        if (findEnabledPlugin(options, name, mod)) {
+          Object.assign(parser, astro)
         }
       }
 
@@ -124,16 +152,15 @@ export async function loadPlugin() {
         return {}
       }
 
-      const parser = {}
+      const printer: Partial<Printer> = {}
 
-      for (const { name, mod } of compatible) {
-        const plugin = findEnabledPlugin(options, name, mod)
-        if (plugin) {
-          Object.assign(parser, plugin.printers?.astro)
+      for (const { name, mod, printer: astro } of compatible) {
+        if (findEnabledPlugin(options, name, mod)) {
+          Object.assign(printer, astro)
         }
       }
 
-      return parser
+      return printer
     },
   }
 }

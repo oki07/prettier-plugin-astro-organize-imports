@@ -1,7 +1,11 @@
+import { version as prettierVersion } from 'prettier'
 import { OrganizeImportsMode } from 'typescript'
 import { describe, expect, test } from 'vitest'
 import { parsers } from '../src'
 import { format, readFixture } from './utils'
+
+const [major, minor] = prettierVersion.split('.').map(Number)
+const tailwindPluginWorks = major > 3 || (major === 3 && minor >= 7)
 
 const tests = [
   {
@@ -107,12 +111,13 @@ const tests = [
     name: 'with prettier-plugin-astro and prettier-plugin-tailwindcss',
     fixtureDir: 'with-astro-and-tailwindcss-plugins',
     plugins: ['prettier-plugin-astro', 'prettier-plugin-tailwindcss'],
+    skip: !tailwindPluginWorks,
   },
 ]
 
 describe('format', () => {
-  for (const { name, fixtureDir, options, plugins } of tests) {
-    test(name, async () => {
+  for (const { name, fixtureDir, options, plugins, skip } of tests) {
+    test.skipIf(skip)(name, async () => {
       const { input, expected } = readFixture(fixtureDir)
       const actual = await format(input, { plugins, ...options })
       expect(actual).toEqual(expected)

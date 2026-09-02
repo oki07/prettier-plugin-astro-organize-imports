@@ -1,12 +1,4 @@
-import type {
-  AstPath,
-  Doc,
-  Options,
-  Parser,
-  ParserOptions,
-  Printer,
-  SupportOption,
-} from 'prettier'
+import type { Parser, Printer, SupportOption } from 'prettier'
 import { OrganizeImportsMode } from 'typescript'
 import {
   organizeImports,
@@ -64,7 +56,7 @@ export const parsers: Record<string, Parser> = {
 
 export const printers: Record<string, Printer> = {
   astro: {
-    print(path: AstPath, opts: ParserOptions, print: (path: AstPath) => Doc) {
+    print(path, opts, print) {
       const original = plugin.originalPrinter(opts)
 
       if (original.print) {
@@ -80,7 +72,7 @@ export const printers: Record<string, Printer> = {
       return node.value
     },
 
-    embed(path: AstPath, options: Options) {
+    embed(path, options) {
       const original = plugin.originalPrinter(options)
 
       if (original.embed) {
