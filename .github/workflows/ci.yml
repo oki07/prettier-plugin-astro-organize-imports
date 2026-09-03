@@ -35,8 +35,9 @@ jobs:
       matrix:
         # 3.0 is the peerDependency floor. 3.6 does not await the parser's
         # `preprocess` hook and 3.7 does, so both sides of that line (#223).
-        # 3.9 widened the `print` callback the printer receives.
-        prettier: ['3.0', '3.6', '3.7', '3.8', '3.9']
+        # 3.9 widened the `print` callback the printer receives, and `next`
+        # (4.0 alphas, which the range `4.0` would not match) narrows it again.
+        prettier: ['3.0', '3.6', '3.7', '3.8', '3.9', 'next']
     name: test (prettier ${{ matrix.prettier }})
     steps:
       - uses: actions/checkout@v7
@@ -46,24 +47,5 @@ jobs:
           cache: 'npm'
       - run: npm install --ignore-scripts
       - run: npm install --no-save --ignore-scripts prettier@${{ matrix.prettier }}
-      - run: npm test
-      - run: npm run test:standalone
-
-  # Prettier 4 is outside the peerDependency range, so this is an early warning
-  # rather than a gate: `next` moves under us and may break for reasons that are
-  # not ours to fix yet.
-  test-next:
-    runs-on: ubuntu-latest
-    continue-on-error: true
-    name: test (prettier next)
-    steps:
-      - uses: actions/checkout@v7
-      - uses: actions/setup-node@v6
-        with:
-          node-version: 24
-          cache: 'npm'
-      - run: npm install --ignore-scripts
-      # `prettier@4.0` would not match a prerelease, so track the dist-tag.
-      - run: npm install --no-save --ignore-scripts prettier@next
       - run: npm test
       - run: npm run test:standalone

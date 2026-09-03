@@ -56,8 +56,6 @@ export const parsers: Record<string, Parser> = {
 
 export const printers: Record<string, Printer> = {
   astro: {
-    // Unannotated on purpose: 3.9 widened the `print` callback, so only
-    // contextual types compile on every supported Prettier.
     print(path, opts, print) {
       const original = plugin.originalPrinter(opts)
 
