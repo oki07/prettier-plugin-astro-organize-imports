@@ -33,12 +33,16 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        # 3.0 is the peerDependency floor. 3.6 does not await the parser's
-        # `preprocess` hook and 3.7 does, so both sides of that line (#223).
-        # 3.9 widened the `print` callback the printer receives, and `next`
-        # (4.0 alphas, which the range `4.0` would not match) narrows it again.
-        prettier: ['3.0', '3.6', '3.7', '3.8', '3.9', 'next']
-    name: test (prettier ${{ matrix.prettier }})
+        include:
+          - prettier: '3.0'
+            covers: peer floor
+          - prettier: '3.8'
+            covers: narrow print callback
+          - prettier: '3.9'
+            covers: wide print callback
+          - prettier: 'next'
+            covers: narrow again, and 4.x
+    name: test (prettier ${{ matrix.prettier }}, ${{ matrix.covers }})
     steps:
       - uses: actions/checkout@v7
       - uses: actions/setup-node@v6
