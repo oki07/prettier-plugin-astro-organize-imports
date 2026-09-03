@@ -56,10 +56,8 @@ export const parsers: Record<string, Parser> = {
 
 export const printers: Record<string, Printer> = {
   astro: {
-    // Deliberately unannotated: Prettier 3.9 widened the `print` callback from
-    // `(path: AstPath) => Doc` to a selector-based signature, so any explicit
-    // annotation would fail to compile on one side of that line. Letting
-    // `Printer` type these contextually keeps every supported 3.x happy.
+    // Unannotated on purpose: 3.9 widened the `print` callback, so only
+    // contextual types compile on every supported Prettier.
     print(path, opts, print) {
       const original = plugin.originalPrinter(opts)
 

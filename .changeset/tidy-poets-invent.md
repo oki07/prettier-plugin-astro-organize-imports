@@ -2,8 +2,8 @@
 'prettier-plugin-astro-organize-imports': patch
 ---
 
-Stop annotating the printer's `print` and `embed` parameters so the plugin
-type-checks against Prettier 3.9, which widened the `print` callback a printer
-receives from `(path: AstPath) => Doc` to a selector-based signature. Letting
-Prettier's own `Printer` type them contextually keeps the plugin buildable on
-every supported 3.x. Runtime behaviour is unchanged.
+Let Prettier's own `Printer` type the printer's `print` and `embed`
+parameters instead of annotating them. Prettier 3.9 widened the `print`
+callback a printer receives, which broke the build's type check; no single
+explicit annotation compiles against both 3.9 and the versions on either side
+of it. Runtime behaviour is unchanged.
