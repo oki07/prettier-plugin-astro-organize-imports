@@ -47,3 +47,18 @@ jobs:
       - run: npm install --no-save --ignore-scripts prettier@${{ matrix.prettier }}
       - run: npm test
       - run: npm run test:standalone
+
+  test-astro-v1:
+    runs-on: ubuntu-latest
+    name: test (prettier-plugin-astro 1.x)
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v6
+        with:
+          node-version: 24
+          cache: 'npm'
+      - run: npm install --ignore-scripts
+      - run: npm install --no-save --ignore-scripts prettier@3.9 prettier-plugin-astro@1
+      - run: npm run typecheck
+      - run: npm run build
+      - run: npx vitest --run -t 'preserves the complete prettier-plugin-astro printer'

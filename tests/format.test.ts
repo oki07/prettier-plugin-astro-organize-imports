@@ -1,3 +1,4 @@
+import prettier from 'prettier'
 import { OrganizeImportsMode } from 'typescript'
 import { describe, expect, test } from 'vitest'
 import { parsers } from '../src'
@@ -129,5 +130,33 @@ describe('format', () => {
 
     expect(actual).not.toBeInstanceOf(Promise)
     expect(typeof actual).toBe('string')
+  })
+
+  test('preserves the complete prettier-plugin-astro printer', async () => {
+    const input = `---
+import Foo from './Foo.astro'
+import Bar from './Bar.astro'
+
+const items = ['one', 'two']
+---
+
+{/* Items */}
+<Foo><Bar />{items.map((item) => <span>{item}</span>)}</Foo>`
+    const organizedInput = input.replace(
+      "import Foo from './Foo.astro'\nimport Bar from './Bar.astro'",
+      "import Bar from './Bar.astro'\nimport Foo from './Foo.astro'",
+    )
+    const expected = await prettier.format(organizedInput, {
+      semi: false,
+      singleQuote: true,
+      printWidth: 9999,
+      parser: 'astro',
+      plugins: ['prettier-plugin-astro'],
+    })
+    const actual = await format(input, {
+      plugins: ['prettier-plugin-astro'],
+    })
+
+    expect(actual).toEqual(expected.trim())
   })
 })
