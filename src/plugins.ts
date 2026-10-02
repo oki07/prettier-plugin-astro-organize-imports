@@ -46,6 +46,7 @@ export async function loadPlugin() {
   const compatible = await loadCompatiblePlugins()
 
   const baseParser = base.parsers?.astro ? { ...base.parsers.astro } : {}
+  const basePrinter = base.printers?.astro ? { ...base.printers.astro } : {}
 
   function maybeResolve(name: string) {
     try {
@@ -100,6 +101,7 @@ export async function loadPlugin() {
 
   return {
     parser: baseParser,
+    printer: basePrinter,
 
     originalParser(options: Options): Partial<Parser> {
       if (!options.plugins) {
