@@ -1,5 +1,13 @@
 # prettier-plugin-astro-organize-imports
 
+## 0.4.14
+
+### Patch Changes
+
+- [#236](https://github.com/oki07/prettier-plugin-astro-organize-imports/pull/236) [`8a13e5f`](https://github.com/oki07/prettier-plugin-astro-organize-imports/commit/8a13e5f8f47390f95721298daa7dcd7f4eb62cad) Thanks [@adamchal](https://github.com/adamchal)! - Forward the complete compatible printer and all print arguments so
+  `prettier-plugin-astro` 1.x keeps its comment traversal and whitespace-aware
+  formatting behavior.
+
 ## 0.4.13
 
 ### Patch Changes
