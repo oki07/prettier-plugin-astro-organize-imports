@@ -67,3 +67,4 @@ test-results/
 .worktrees/
 .apm-cache/
 apm_modules/
+.build/
